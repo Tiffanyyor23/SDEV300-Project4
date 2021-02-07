@@ -2,7 +2,8 @@ import numpy as np
 import re
 import sys
 
-phone_number_regex = re.compile(r'(\d\d\d-\d\d\d-\d\d\d\d)')  # that r makes it raw string
+phone_number_regex = \
+    re.compile(r'(\d\d\d-\d\d\d-\d\d\d\d)')  # that r makes it raw string
 zip_code_regex = re.compile(r'(\d\d\d\d\d-\d\d\d\d)')
 
 menu_options = {
@@ -18,7 +19,8 @@ def check_if_value_is_numeric(value):
     while True:
         if len(value) == 3 and value.isnumeric():
             break
-        value = input("The value you provided is not valid.  Please enter a numeric value")
+        value = input("The value you provided is not valid."
+                      "  Please enter a numeric value")
     return value
 
 
@@ -28,13 +30,16 @@ def obtain_matrix_input(number):
     """
     matrix_list = []
     counter = 0
-    matrix_input = check_if_value_is_numeric(input("Please enter your first 3 x 3 matrix three numbers at at time: "))
+    matrix_input = check_if_value_is_numeric(input("Please enter your "
+                                                   "first 3 x 3 matrix"
+                                                   " three numbers at at time: "))
     for number in matrix_input:
         matrix_list.append(int(number))
         matrix_array = np.array([matrix_list])
     while counter < 2:
         matrix_list = []
-        matrix_input = check_if_value_is_numeric(input("Please enter your next 3 x 3 matrix three numbers at at time: "))
+        matrix_input = check_if_value_is_numeric(input("Please \
+        enter your next 3 x 3 matrix three numbers at at time: "))
         for number in matrix_input:
             matrix_list.append(int(number))
         matrix_array = np.append(matrix_array, [matrix_list], 0)
@@ -66,19 +71,22 @@ def multiply_matrices(matrix_one, matrix_two):
 
 
 def multiply_matrices_by_elements():
-    """ The purpose of this function is to multiply specific elements of matrices"""
+    """ The purpose of this function is to
+     multiply specific elements of matrices"""
     pass
 
 
 def transpose_matrix(matrix):
-    """ The purpose of this function to to transpose the provided matrix"""
+    """ The purpose of this function to to transpose
+     the provided matrix"""
     transpose = np.transpose(matrix)
     print("The transpose is: ")
     print(transpose)
 
 
 def row_mean(matrix):
-    """ The purpose of this function is to calculate the mean value of each row in the provided matrix"""
+    """ The purpose of this function is to calculate
+    the mean value of each row in the provided matrix"""
     add = 0
     counter = 0
     row_mean_list = []
@@ -88,72 +96,87 @@ def row_mean(matrix):
         add = add // 3
         counter = counter + 1
         row_mean_list.append(add)
-    print(f'Row: {row_mean_list[0]}, {row_mean_list[1]}, {row_mean_list[2]}')
+    print(f'Row: {row_mean_list[0]}, {row_mean_list[1]}, '
+          f'{row_mean_list[2]}')
 
 
 def column_mean(matrix):
-    """ The purpose of this function is to calculate the mean value of each column in the provided matrix"""
+    """ The purpose of this function is to
+    calculate the mean value of each column in the provided matrix"""
     column_mean_list = []
     for row in matrix:
         add = row[0] + row[1] + row[2]
         add = add // 3
         column_mean_list.append(add)
-    print(f'Column: {column_mean_list[0]}, {column_mean_list[1]}, {column_mean_list[2]}')
+    print(f'Column: {column_mean_list[0]}, {column_mean_list[1]},'
+          f' {column_mean_list[2]}')
 
 
 print("Welcome to the Matrix Application.")
-play_game = input("Would you like to play the Matrix Game? Enter Yes or No: ").lower()
+play_game = input("Would you like to play the"
+                  " Matrix Game? Enter Yes or No: ").lower()
 while play_game not in ('yes', 'no'):
-    play_game = input("Your response is not valid. Please enter yes or no: ")
+    play_game = input("Your response is not"
+                      " valid. Please enter yes or no: ")
 if play_game == 'no':
     print("Thank you.  Good Bye")
     sys.exit()
 while play_game == 'yes':
-    phone_number = phone_number_regex.search(input("Please enter your "
-                                                   "phone number in formation (xxx-xxx-xxxx): "))
+    phone_number = \
+        phone_number_regex.search(input("Please enter "
+                                        "your phone number in "
+                                        "formation (xxx-xxx-xxxx): "))
     while 1:
         if phone_number is not None and len(phone_number) == 12:
             break
         else:
             phone_number = input("The value you provided is not valid.  "
-                                 "Please enter your phone number with formation (xxx-xxx-xxxx): ")
+                                 "Please enter your phone number with "
+                                 "formation (xxx-xxx-xxxx): ")
 
-    zip_code = zip_code_regex.search(input("Please enter your zipcode in format code+4"))
+    zip_code = zip_code_regex.search(input("Please enter your "
+                                           "zipcode in format code+4"))
     while 1:
         if zip_code is not None and len(zip_code) == 9:
             break
         else:
             zip_code = input("The value you provided is not valid.  "
-                             "Please enter your zip code with format (xxx-xxx-xxxx")
+                             "Please enter your zip code with "
+                             "format (xxx-xxx-xxxx")
     first_matrix = obtain_matrix_input('First')
     second_matrix = obtain_matrix_input('Second')
-    print("Please select an operation, from the below, to perform on your matrices.")
+    print("Please select an operation, from the below, to "
+          "perform on your matrices.")
     for choice, option in menu_options.items():
         print(f'{choice} : {option}')
     user_response = ''
     while not user_response:
         selection = input("Selection: ")
         if selection == "a":
-            print("You have selected to add matrices.  Below are the results of the operation.")
+            print("You have selected to add matrices. "
+                  " Below are the results of the operation.")
             print("The output for this operation is below \n")
             answer = add_matrices(first_matrix, second_matrix)
             transpose_matrix(answer)
             row_mean(answer)
             column_mean(answer)
         elif selection == "b":
-            print("You have selected to subtract matrices.  Following are the results of the operation")
+            print("You have selected to subtract matrices.  "
+                  "Following are the results of the operation")
             answer_b = subtract_matrices(first_matrix, second_matrix)
             transpose_matrix(answer_b)
             row_mean(answer_b)
             column_mean(answer_b)
         elif selection == "c":
-            print("You have selected to multiply matrices.  Following are the results of the operation")
+            print("You have selected to multiply matrices.  Following "
+                  "are the results of the operation")
             answer_c = multiply_matrices(first_matrix, second_matrix)
             transpose_matrix(answer_c)
             row_mean(answer_c)
             column_mean(answer_c)
         elif selection == "d":
-            print("You have selected to do element by element multiplication  Following are the results of the operation")
+            print("You have selected to do element by element multiplication  "
+                  "Following are the results of the operation")
             answer_d = multiply_matrices_by_elements()
 
         else:
