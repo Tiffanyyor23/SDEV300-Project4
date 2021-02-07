@@ -24,15 +24,13 @@ def check_if_value_is_numeric(value):
     return value
 
 
-def obtain_matrix_input(number):
+def obtain_matrix_input(order):
     """ The purpose of this function is to collect user input and generate
     the necessary matrices
     """
     matrix_list = []
     counter = 0
-    matrix_input = check_if_value_is_numeric(input("Please enter your "
-                                                   "first 3 x 3 matrix"
-                                                   " three numbers at at time: "))
+    matrix_input = check_if_value_is_numeric(input(f'Please enter your {order} 3 x 3 matrix three numbers at at time: '))
     for number in matrix_input:
         matrix_list.append(int(number))
         matrix_array = np.array([matrix_list])
@@ -44,7 +42,7 @@ def obtain_matrix_input(number):
             matrix_list.append(int(number))
         matrix_array = np.append(matrix_array, [matrix_list], 0)
         counter += 1
-    print(f'Your {number} matrix is')
+    print(f'Your {order} matrix is')
     print(matrix_array)
     return matrix_array
 
@@ -122,29 +120,28 @@ if play_game == 'no':
     print("Thank you.  Good Bye")
     sys.exit()
 while play_game == 'yes':
-    phone_number = \
-        phone_number_regex.search(input("Please enter "
-                                        "your phone number in "
-                                        "formation (xxx-xxx-xxxx): "))
+    phone_number = (input("Please enter your phone number in formation (xxx-xxx-xxxx): "))
+    regex_phone = phone_number_regex.search(phone_number)
     while 1:
-        if phone_number is not None and len(phone_number) == 12:
+        if regex_phone is not None and len(phone_number) == 12:
             break
         else:
             phone_number = input("The value you provided is not valid.  "
                                  "Please enter your phone number with "
                                  "formation (xxx-xxx-xxxx): ")
+            regex_phone = phone_number_regex.search(phone_number)
 
-    zip_code = zip_code_regex.search(input("Please enter your "
-                                           "zipcode in format code+4"))
+    zip_code = input("Please enter your zipcode in format code+4")
+    regex_zip = zip_code_regex.search(zip_code)
     while 1:
-        if zip_code is not None and len(zip_code) == 9:
+        if regex_zip is not None and len(zip_code) == 10:
             break
         else:
             zip_code = input("The value you provided is not valid.  "
                              "Please enter your zip code with "
-                             "format (xxx-xxx-xxxx")
-    first_matrix = obtain_matrix_input('First')
-    second_matrix = obtain_matrix_input('Second')
+                             "format code+4")
+    first_matrix = obtain_matrix_input('first')
+    second_matrix = obtain_matrix_input('second')
     print("Please select an operation, from the below, to "
           "perform on your matrices.")
     for choice, option in menu_options.items():
@@ -183,6 +180,6 @@ while play_game == 'yes':
             print("The value you entered is not a valid option. Please only enter a "
                   "value that corresponds to the options printed on the screen: ")
             user_response = False
-    user_response = True
+        user_response = True
     play_game = input("Do you want to play the Matrix Game, again? Enter Yes or No: ")
 print("Thank you for playing. \n Good bye")
