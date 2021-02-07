@@ -1,5 +1,6 @@
 import numpy as np
 import re
+import sys
 
 phone_number_regex = re.compile(r'(\d\d\d-\d\d\d-\d\d\d\d)')  # that r makes it raw string
 zip_code_regex = re.compile(r'(\d\d\d\d\d-\d\d\d\d)')
@@ -102,37 +103,63 @@ def column_mean(matrix):
 
 print("Welcome to the Matrix Application.")
 play_game = input("Would you like to play the Matrix Game? Enter Yes or No: ").lower()
+while play_game not in ('yes', 'no'):
+    play_game = input("Your response is not valid. Please enter yes or no: ")
+if play_game == 'no':
+    print("Thank you.  Good Bye")
+    sys.exit()
 while play_game == 'yes':
+    phone_number = phone_number_regex.search(input("Please enter your "
+                                                   "phone number in formation (xxx-xxx-xxxx): "))
+    while 1:
+        if phone_number is not None and len(phone_number) == 12:
+            break
+        else:
+            phone_number = input("The value you provided is not valid.  "
+                                 "Please enter your phone number with formation (xxx-xxx-xxxx): ")
+
+    zip_code = zip_code_regex.search(input("Please enter your zipcode in format code+4"))
+    while 1:
+        if zip_code is not None and len(zip_code) == 9:
+            break
+        else:
+            zip_code = input("The value you provided is not valid.  "
+                             "Please enter your zip code with format (xxx-xxx-xxxx")
     first_matrix = obtain_matrix_input('First')
     second_matrix = obtain_matrix_input('Second')
     print("Please select an operation, from the below, to perform on your matrices.")
     for choice, option in menu_options.items():
         print(f'{choice} : {option}')
-    selection = input("Selection: ")
-    if selection == "a":
-        print("You have selected to add matrices.  Below are the results of the operation.")
-        print("The output for this operation is below \n")
-        answer = add_matrices(first_matrix, second_matrix)
-        transpose_matrix(answer)
-        row_mean(answer)
-        column_mean(answer)
-    elif selection == "b":
-        print("You have selected to subtract matrices.  Following are the results of the operation")
-        answer_b = subtract_matrices(first_matrix, second_matrix)
-        transpose_matrix(answer_b)
-        row_mean(answer_b)
-        column_mean(answer_b)
-    elif selection == "c":
-        print("You have selected to multiply matrices.  Following are the results of the operation")
-        answer_c = multiply_matrices(first_matrix, second_matrix)
-        transpose_matrix(answer_c)
-        row_mean(answer_c)
-        column_mean(answer_c)
-    elif selection == "d":
-        print("You have selected to do element by element multiplication  Following are the results of the operation")
-        answer_d = multiply_matrices_by_elements()
+    user_response = ''
+    while not user_response:
+        selection = input("Selection: ")
+        if selection == "a":
+            print("You have selected to add matrices.  Below are the results of the operation.")
+            print("The output for this operation is below \n")
+            answer = add_matrices(first_matrix, second_matrix)
+            transpose_matrix(answer)
+            row_mean(answer)
+            column_mean(answer)
+        elif selection == "b":
+            print("You have selected to subtract matrices.  Following are the results of the operation")
+            answer_b = subtract_matrices(first_matrix, second_matrix)
+            transpose_matrix(answer_b)
+            row_mean(answer_b)
+            column_mean(answer_b)
+        elif selection == "c":
+            print("You have selected to multiply matrices.  Following are the results of the operation")
+            answer_c = multiply_matrices(first_matrix, second_matrix)
+            transpose_matrix(answer_c)
+            row_mean(answer_c)
+            column_mean(answer_c)
+        elif selection == "d":
+            print("You have selected to do element by element multiplication  Following are the results of the operation")
+            answer_d = multiply_matrices_by_elements()
 
-    else:
-        pass
+        else:
+            print("The value you entered is not a valid option. Please only enter a "
+                  "value that corresponds to the options printed on the screen: ")
+            user_response = False
+    user_response = True
     play_game = input("Do you want to play the Matrix Game, again? Enter Yes or No: ")
 print("Thank you for playing. \n Good bye")
