@@ -1,9 +1,12 @@
-import numpy as np
+""" The purpose of this program is to generate matrices based on
+information provided by the user and perform various mathmatical
+operations on the matrices"""
+
 import re
 import sys
+import numpy as np
 
-phone_number_regex = \
-    re.compile(r'(\d\d\d-\d\d\d-\d\d\d\d)')  # that r makes it raw string
+phone_number_regex = re.compile(r'(\d\d\d-\d\d\d-\d\d\d\d)')
 zip_code_regex = re.compile(r'(\d\d\d\d\d-\d\d\d\d)')
 
 menu_options = {
@@ -15,7 +18,7 @@ menu_options = {
 
 
 def check_if_value_is_numeric(value):
-    # This function ensures the value is numeric and presented as a integer.
+    """ This function ensures the value is numeric and presented as a integer."""
     while True:
         if len(value) == 3 and value.isnumeric():
             break
@@ -30,7 +33,8 @@ def obtain_matrix_input(order):
     """
     matrix_list = []
     counter = 0
-    matrix_input = check_if_value_is_numeric(input(f'Please enter your {order} 3 x 3 matrix three numbers at at time: '))
+    matrix_input = check_if_value_is_numeric(input(f'Please enter your\
+{order} 3 x 3 matrix three numbers at at time: '))
     for number in matrix_input:
         matrix_list.append(int(number))
         matrix_array = np.array([matrix_list])
@@ -63,15 +67,17 @@ def subtract_matrices(matrix_one, matrix_two):
 
 def multiply_matrices(matrix_one, matrix_two):
     """ The purpose of this function is to multiply 2 matrices"""
-    multiplication_output = np.multiply(matrix_one, matrix_two)
+    multiplication_output = np.matmul(matrix_one, matrix_two)
     print(multiplication_output)
     return multiplication_output
 
 
-def multiply_matrices_by_elements():
+def multiply_matrices_by_elements(matrix_one, matrix_two):
     """ The purpose of this function is to
      multiply specific elements of matrices"""
-    pass
+    element_multiplication_output = np.multiply(matrix_one, matrix_two)
+    print(element_multiplication_output)
+    return element_multiplication_output
 
 
 def transpose_matrix(matrix):
@@ -89,8 +95,8 @@ def row_mean(matrix):
     counter = 0
     row_mean_list = []
     while counter != 3:
-        for x in matrix:
-            add = add + x[counter]
+        for number in matrix:
+            add = add + number[counter]
         add = add // 3
         counter = counter + 1
         row_mean_list.append(add)
@@ -140,6 +146,8 @@ while play_game == 'yes':
             zip_code = input("The value you provided is not valid.  "
                              "Please enter your zip code with "
                              "format code+4")
+            regex_zip = zip_code_regex.search(zip_code)
+
     first_matrix = obtain_matrix_input('first')
     second_matrix = obtain_matrix_input('second')
     print("Please select an operation, from the below, to "
@@ -174,8 +182,10 @@ while play_game == 'yes':
         elif selection == "d":
             print("You have selected to do element by element multiplication  "
                   "Following are the results of the operation")
-            answer_d = multiply_matrices_by_elements()
-
+            answer_d = multiply_matrices_by_elements(first_matrix, second_matrix)
+            transpose_matrix(answer_d)
+            row_mean(answer_d)
+            column_mean(answer_d)
         else:
             print("The value you entered is not a valid option. Please only enter a "
                   "value that corresponds to the options printed on the screen: ")
